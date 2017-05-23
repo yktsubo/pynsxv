@@ -32,7 +32,7 @@ import library.nsx_dhcp as dhcp
 import library.nsx_lb as lb
 import library.nsx_dfw as dfw
 import library.nsx_usage as usage
-
+import library.nsx_ipset as ipset
 
 def main():
     parser = argparse.ArgumentParser(description='PyNSXv Command Line Client for NSX for vSphere')
@@ -57,6 +57,7 @@ def main():
     lb.contruct_parser(subparsers)
     dfw.contruct_parser(subparsers)
     usage.contruct_parser(subparsers)
+    ipset.contruct_parser(subparsers)
 
     args = parser.parse_args()
     args.func(args)

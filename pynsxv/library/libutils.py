@@ -48,8 +48,7 @@ def nametovalue(vccontent, client_session, name, type):
     if type == 'ipset':
         ipset_id = str()
         scopename = 'globalroot-0'
-        ipsets = get_ipsets(client_session, scopename)
-        ipsets_list = ipsets.items()[1][1]['list']['ipset']
+        ipsets_list = get_ipsets(client_session, scopename)
         for i, val in enumerate(ipsets_list):
             if str(val['name']) == name:
                 ipset_id = val['objectId']
@@ -100,11 +99,22 @@ def get_scope(client_session, transport_zone_name):
 
     return vdn_scope['objectId'], vdn_scope
 
-def get_ipsets(client_session, scopename):
-    #TODO documentation
-    ip_sets = client_session.read('ipsetList', uri_parameters={'scopeMoref': scopename})
-    return ip_sets
-
+def get_ipsets(client_session, scope_id='globalroot-0'):
+    """
+    :param client_session: An instance of an NsxClient Session
+    :param scopename: The name of scope to search
+    :return: A tuple, with the first item being the logical switch id as string of the first Scope found with the
+             right name and the second item being a dictionary of the logical parameters as return by the NSX API
+    """
+    try:
+        ipsets = client_session.read('ipsetList', uri_parameters={'scopeMoref': scope_id})
+        if ipsets['body']['list']:
+            ipset_list = client_session.normalize_list_return(ipsets['body']['list']['ipset'])
+        else:
+            return None,None
+    except KeyError:
+        return None, None
+    return ipset_list
 
 def get_macsets(client_session, scopename):
     #TODO documentation
