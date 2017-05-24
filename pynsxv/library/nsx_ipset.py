@@ -114,7 +114,7 @@ def ipset_read(client_session, ipset_name, scope_id='globalroot-0'):
     """
     all_ipsets = get_ipsets(client_session, scope_id=scope_id)
     try:
-        ipset_params = [scope for scope in all_ipsets if scope and scope['name'] == ipset_name][0]
+        ipset_params = [scope for scope in all_ipsets if scope['name'] == ipset_name][0]
         ipset_id = ipset_params['objectId']
     except IndexError:
         return None, None
@@ -151,12 +151,11 @@ def get_ipset_list(client_session):
     all_ipsets = get_ipsets(client_session)
     ipset_list = []
     for ipset in all_ipsets:
-        if ipset:
-            try:
-                ipset_name = ipset['name']
-            except KeyError:
-                ipset_name = '<empty name>'
-            ipset_list.append((ipset_name, ipset['objectId']))
+        try:
+            ipset_name = ipset['name']
+        except KeyError:
+            ipset_name = '<empty name>'
+        ipset_list.append((ipset_name, ipset['objectId']))
     return ipset_list, all_ipsets
 
 

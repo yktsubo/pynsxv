@@ -103,17 +103,16 @@ def get_ipsets(client_session, scope_id='globalroot-0'):
     """
     :param client_session: An instance of an NsxClient Session
     :param scopename: The name of scope to search
-    :return: A tuple, with the first item being the logical switch id as string of the first Scope found with the
-             right name and the second item being a dictionary of the logical parameters as return by the NSX API
+    :return: A list of ipsets
     """
     try:
         ipsets = client_session.read('ipsetList', uri_parameters={'scopeMoref': scope_id})
         if ipsets['body']['list']:
             ipset_list = client_session.normalize_list_return(ipsets['body']['list']['ipset'])
         else:
-            return None,None
+            return []
     except KeyError:
-        return None, None
+        return []
     return ipset_list
 
 def get_macsets(client_session, scopename):
@@ -122,11 +121,22 @@ def get_macsets(client_session, scopename):
     return mac_sets
 
 
-def get_secgroups(client_session, scopename):
-    #TODO documentation
-    secgroups = client_session.read('secGroupScope', uri_parameters={'scopeId': scopename})
-    return secgroups
-
+def get_secgroups(client_session, scope_id='globalroot-0'):
+    """
+    :param client_session: An instance of an NsxClient Session
+    :param scopename: The name of scope to search
+    :return: A list of secgroups
+    """
+    try:
+        secgroups = client_session.read('secGroupScope', uri_parameters={'scopeId': scope_id})
+        if secgroups['body']['list']:
+            all_secgroup_list = client_session.normalize_list_return(secgroups['body']['list']['securitygroup'])
+            secgroup_list = [secgroup for secgroup in all_secgroup_list if secgroup['name'] != 'Activity Monitoring Data Collection']
+        else:
+            return []
+    except KeyError:
+        return []
+    return secgroup_list
 
 def get_logical_switch(client_session, logical_switch_name):
     """
