@@ -34,6 +34,8 @@ import library.nsx_dfw as dfw
 import library.nsx_usage as usage
 import library.nsx_ipset as ipset
 import library.nsx_secgroup as secgroup
+import library.nsx_installation as installation
+# import library.nsx_controller as controller
 
 def main():
     parser = argparse.ArgumentParser(description='PyNSXv Command Line Client for NSX for vSphere')
@@ -60,6 +62,8 @@ def main():
     usage.contruct_parser(subparsers)
     ipset.contruct_parser(subparsers)
     secgroup.contruct_parser(subparsers)
+    installation.contruct_parser(subparsers)
+    # controller.contruct_parser(subparsers)
 
     args = parser.parse_args()
     args.func(args)
