@@ -33,6 +33,7 @@ from nsxramlclient.client import NsxClient
 from argparse import RawTextHelpFormatter
 from pkg_resources import resource_filename
 import OpenSSL, ssl
+from pprint import pprint
 
 def register_vc_config(client_session, vcenter_ip, vcenter_user,vcenter_passwd):
 
@@ -42,7 +43,7 @@ def register_vc_config(client_session, vcenter_ip, vcenter_user,vcenter_passwd):
     :return: returns a tuple, the first item is the logical switch ID in NSX as string, the second is string
              containing the logical switch URL location as returned from the API
     """
-    vc_config = show_vc_config(client_session)
+    vc_config, _ = show_vc_config(client_session)
     api_cert = ssl.get_server_certificate((vcenter_ip, 9443),ssl_version=2)
     x509_api = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, api_cert)
     api_cert_thumbp = x509_api.digest('sha1')
