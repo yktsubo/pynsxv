@@ -36,6 +36,7 @@ import library.nsx_ipset as ipset
 import library.nsx_secgroup as secgroup
 import library.nsx_installation as installation
 import library.nsx_vmhost as vmhost
+import library.nsx_vm as vm
 # import library.nsx_controller as controller
 
 def main():
@@ -65,6 +66,7 @@ def main():
     secgroup.contruct_parser(subparsers)
     installation.contruct_parser(subparsers)
     vmhost.contruct_parser(subparsers)
+    vm.contruct_parser(subparsers)
     # controller.contruct_parser(subparsers)
 
     args = parser.parse_args()
